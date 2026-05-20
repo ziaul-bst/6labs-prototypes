@@ -92,6 +92,14 @@ export function BigQueryDetailView({
   const [pendingColumnDescs, setPendingColumnDescs] = useState<Record<string, string>>({})
   const [pendingOrgWide, setPendingOrgWide] = useState<boolean | null>(null)
 
+  const isError = connection.kind === 'error'
+  const isSyncing = connection.kind === 'connected' && connection.syncing
+  const dirty =
+    connection.kind === 'connected' &&
+    (Object.keys(pendingTableDescs).length > 0 ||
+      Object.keys(pendingColumnDescs).length > 0 ||
+      (pendingOrgWide !== null && pendingOrgWide !== connection.orgWideAccess))
+
   // Reset the buffer when we switch to a different connection state — avoids
   // stale edits surviving a disconnect/reconnect cycle.
   useEffect(() => {
@@ -99,6 +107,30 @@ export function BigQueryDetailView({
     setPendingColumnDescs({})
     setPendingOrgWide(null)
   }, [connection.kind])
+
+  // Notify parent when the dirty flag flips so it can intercept navigation.
+  useEffect(() => {
+    onDirtyChange?.(dirty)
+  }, [dirty, onDirtyChange])
+
+  // Imperative reset from parent (used by the unsaved-changes confirm modal).
+  useEffect(() => {
+    if (resetSignal === undefined) return
+    setPendingTableDescs({})
+    setPendingColumnDescs({})
+    setPendingOrgWide(null)
+  }, [resetSignal])
+
+  // Warn on browser-level navigation away (tab close, refresh, deep link).
+  useEffect(() => {
+    if (!dirty) return
+    const handler = (e: BeforeUnloadEvent) => {
+      e.preventDefault()
+      e.returnValue = ''
+    }
+    window.addEventListener('beforeunload', handler)
+    return () => window.removeEventListener('beforeunload', handler)
+  }, [dirty])
 
   // Not connected — defer to the generic "About / Benefits / Steps" template.
   if (connection.kind === 'not-connected') {
@@ -110,14 +142,6 @@ export function BigQueryDetailView({
       />
     )
   }
-
-  const isError = connection.kind === 'error'
-  const isSyncing = connection.kind === 'connected' && connection.syncing
-  const dirty =
-    connection.kind === 'connected' &&
-    (Object.keys(pendingTableDescs).length > 0 ||
-      Object.keys(pendingColumnDescs).length > 0 ||
-      (pendingOrgWide !== null && pendingOrgWide !== connection.orgWideAccess))
 
   const handleSave = () => {
     if (connection.kind !== 'connected') return
@@ -144,29 +168,6 @@ export function BigQueryDetailView({
     setPendingColumnDescs({})
     setPendingOrgWide(null)
   }
-
-  // Notify parent when the dirty flag flips so it can intercept navigation.
-  useEffect(() => {
-    onDirtyChange?.(dirty)
-  }, [dirty, onDirtyChange])
-
-  // Imperative reset from parent (used by the unsaved-changes confirm modal).
-  useEffect(() => {
-    if (resetSignal === undefined) return
-    handleDiscard()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [resetSignal])
-
-  // Warn on browser-level navigation away (tab close, refresh, deep link).
-  useEffect(() => {
-    if (!dirty) return
-    const handler = (e: BeforeUnloadEvent) => {
-      e.preventDefault()
-      e.returnValue = ''
-    }
-    window.addEventListener('beforeunload', handler)
-    return () => window.removeEventListener('beforeunload', handler)
-  }, [dirty])
 
   const pendingCount =
     Object.keys(pendingTableDescs).length +
