@@ -338,29 +338,40 @@ Located in: `Components → Buttons → 💠 Buttons`
 | `Button Attributes` | `12945:1352` | Button property/state variants |
 | `Tooltips` | `12454:3025` | Tooltip popovers attached to buttons |
 
-**Button color variants:**
-- White button
-- Black button
-- Accent / Blue (`#1770EF`) button
-- Accent 6Labs button
-- White-80 (translucent)
-- Black-80 (translucent)
-- Complementary Pink (`#C20568`)
-- Complementary Purple (`#7B4CFF`)
+**Button Type variants** (`Type` property on the `Button` component):
 
-**Button properties:**
-- Size variants: Small, Medium, Large, XLarge
-- State: Default, Hover, Pressed, Disabled, Loading
-- With/without leading icon
-- With/without trailing icon
-- Shape: Standard (rounded) or Pill
+| Type | Description |
+|---|---|
+| `Primary` | Primary CTA — `Interactive/Brand` fill (`#1770EF`) |
+| `Secondary` | Secondary action — `Background/Elements` fill with brand border |
+| `Tertiary` | Low emphasis — no fill, no border |
+| `Outline` | Bordered — `Border/Default` stroke |
+| `Outline - Complimentary` | Complementary border variant |
+| `Danger` | Destructive action — `Status/Error` fill |
+| `Blueish` | 6Labs brand tint — `Background/Highlighted Tint` |
+| `Translucent` | On dark surfaces — semi-transparent fill |
+| `Transparent` | Ghost / no fill |
+| `Link-0-padding` | Inline text action — no padding, no border |
 
-**Button border radius by size** (from Semantic/button/* tokens):
-- Small → `4px`
-- Medium → `6px`
-- Large → `8px`
-- XLarge → `10px`
-- Pill → `9999px`
+**States** (`State` property):
+- `Default`, `Hover`, `Click` (active/pressed), `Disabled`, `Focus`
+
+**Boolean toggles:**
+- `L Icon` / `R Icon` — show/hide left or right icon slots (set on `Button Attributes`)
+- `Hover Tooltip` / `Click Tooltip` — attach tooltip on hover or click (set on `Button`)
+
+**Size × Style matrix** (`Size` and `Style` on `Button Attributes`):
+
+| Size | Height | Padding X | Padding Y | Gap | Font | Icon | Radius |
+|---|---|---|---|---|---|---|---|
+| Small | 24px | 12px (`Spacing/s`) | 4px (`Spacing/xxs`) | 4px | 10px (`size/2xs`) | 12px | 4px (`Semantic/button/small`) |
+| Medium | 32px | 16px (`Spacing/m`) | 8px (`Spacing/xs`) | 8px | 12px (`size/xs`) | 16px | 6px (`Semantic/button/medium`) |
+| Large | 44px | 24px (`Spacing/xl`) | 12px (`Spacing/s`) | 12px | 14px (`size/s`) | 20px | 8px (`Semantic/button/large`) |
+| XLarge | 56px | 32px (`Spacing/xxl`) | 16px (`Spacing/m`) | 12px | 16px (`size/m`) | 24px | 10px (`Semantic/button/xlarge`) |
+
+Style options: `Label & Rounded`, `Label & Pill`, `Icon Btn Square`, `Icon Btn Round`
+
+All button labels use `Bricolage Grotesque SemiBold` via the `Button Label/*` text styles. Pill shape uses `Semantic/button/Pill` → `9999px`.
 
 #### App Store Buttons
 

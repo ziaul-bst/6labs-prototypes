@@ -590,6 +590,305 @@
         radial-gradient(ellipse 70% 35% at 51% 105%, rgba(123,76,255,0.10)  0%, transparent 65%),
         #f1f1f1;
     }
+
+    /* ═══════════════════════════════════════════════════════════
+       GAME INTELLIGENCE VIEW
+    ═══════════════════════════════════════════════════════════ */
+    #giView { flex: 1; display: none; flex-direction: column; overflow: hidden; background: var(--bgc); }
+    #giView.visible { display: flex; }
+
+    /* Header */
+    .gi-header {
+      padding: 24px 24px 0;
+      display: flex; align-items: flex-start; justify-content: space-between;
+      flex-shrink: 0; gap: 16px;
+    }
+    .gi-title {
+      font-family: var(--f-display); font-size: 22px; font-weight: 800;
+      color: var(--base-900); line-height: 1.2;
+    }
+    .gi-subtitle { font-size: 13px; color: var(--base-400); margin-top: 4px; line-height: 1.5; }
+    .gi-upload-btn {
+      display: flex; align-items: center; gap: 8px;
+      padding: 10px 18px; border-radius: 10px; border: none;
+      background: var(--accent); color: var(--white); cursor: pointer;
+      font-family: var(--f-display); font-size: 14px; font-weight: 600;
+      box-shadow: 0 4px 12px rgba(23,112,239,.3);
+      transition: background .15s, transform .1s; flex-shrink: 0;
+    }
+    .gi-upload-btn:hover { background: var(--accent-hover); transform: translateY(-1px); }
+
+    /* Stats row */
+    .gi-stats {
+      display: flex; gap: 12px; padding: 16px 24px 0; flex-shrink: 0; flex-wrap: wrap;
+    }
+    .gi-stat {
+      background: var(--white); border: 1px solid var(--base-50);
+      border-radius: 12px; padding: 12px 16px;
+      display: flex; align-items: center; gap: 10px; flex: 1; min-width: 120px;
+    }
+    .gi-stat-icon {
+      width: 32px; height: 32px; border-radius: 8px;
+      background: var(--accent-tint); display: flex; align-items: center; justify-content: center;
+      color: var(--accent); flex-shrink: 0;
+    }
+    .gi-stat-value {
+      font-family: var(--f-display); font-size: 20px; font-weight: 700;
+      color: var(--base-900); line-height: 1;
+    }
+    .gi-stat-label { font-size: 12px; color: var(--base-400); margin-top: 2px; }
+
+    /* Scrollable body */
+    .gi-body {
+      flex: 1; overflow-y: auto; padding: 16px 24px 24px;
+      display: flex; flex-direction: column; gap: 16px;
+    }
+    .gi-body::-webkit-scrollbar { width: 6px; }
+    .gi-body::-webkit-scrollbar-thumb { background: var(--base-100); border-radius: 3px; }
+
+    /* Drop zone */
+    .gi-dropzone {
+      border: 2px dashed var(--base-100); border-radius: 16px;
+      padding: 40px 24px; text-align: center;
+      display: flex; flex-direction: column; align-items: center; gap: 12px;
+      background: var(--white); cursor: pointer;
+      transition: border-color .2s, background .2s; position: relative;
+    }
+    .gi-dropzone:hover, .gi-dropzone.drag-over {
+      border-color: var(--accent); background: rgba(23,112,239,.04);
+    }
+    .gi-dropzone input[type="file"] {
+      position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; height: 100%;
+    }
+    .gi-dropzone-icon {
+      width: 56px; height: 56px; border-radius: 16px;
+      background: var(--accent-tint); display: flex; align-items: center; justify-content: center;
+      color: var(--accent);
+    }
+    .gi-dropzone-title {
+      font-family: var(--f-display); font-size: 16px; font-weight: 700; color: var(--base-800);
+    }
+    .gi-dropzone-sub { font-size: 13px; color: var(--base-400); line-height: 1.5; }
+    .gi-dropzone-types { display: flex; gap: 6px; flex-wrap: wrap; justify-content: center; }
+    .gi-type-pill {
+      font-family: var(--f-label); font-size: 10px; font-weight: 700;
+      letter-spacing: 1px; text-transform: uppercase;
+      color: var(--base-500); background: var(--base-50);
+      border: 1px solid var(--base-100); border-radius: 5px; padding: 3px 8px;
+    }
+
+    /* Empty state */
+    .gi-empty {
+      flex: 1; display: flex; flex-direction: column; align-items: center;
+      justify-content: center; gap: 16px; padding: 40px; text-align: center;
+    }
+    .gi-empty-icon {
+      width: 80px; height: 80px; border-radius: 24px;
+      background: var(--accent-tint); display: flex; align-items: center; justify-content: center;
+      color: var(--accent);
+    }
+    .gi-empty-title {
+      font-family: var(--f-display); font-size: 20px; font-weight: 700; color: var(--base-800);
+    }
+    .gi-empty-desc { font-size: 14px; color: var(--base-400); max-width: 380px; line-height: 1.6; }
+
+    /* Library */
+    .gi-library-header {
+      display: flex; align-items: center; justify-content: space-between; margin-bottom: 4px;
+    }
+    .gi-library-title {
+      font-family: var(--f-display); font-size: 15px; font-weight: 700; color: var(--base-700);
+    }
+    .gi-library-count { font-size: 12px; color: var(--base-400); margin-left: 8px; }
+    .gi-files { display: flex; flex-direction: column; gap: 8px; }
+
+    /* File card */
+    .gi-file-card {
+      background: var(--white); border: 1px solid var(--base-50);
+      border-radius: 12px; padding: 14px 16px;
+      display: flex; align-items: center; gap: 14px; transition: box-shadow .2s;
+    }
+    .gi-file-card:hover { box-shadow: 0 4px 12px var(--black-10); }
+    .gi-file-type-icon {
+      width: 40px; height: 40px; border-radius: 10px;
+      display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+    }
+    .gi-file-type-icon.pdf { background: rgba(239,68,68,.1); color: #ef4444; }
+    .gi-file-type-icon.ppt { background: rgba(249,115,22,.1); color: #f97316; }
+    .gi-file-type-icon.doc { background: rgba(59,130,246,.1); color: #3b82f6; }
+    .gi-file-type-icon.img { background: rgba(139,92,246,.1); color: #8b5cf6; }
+    .gi-file-type-icon.vid { background: rgba(236,72,153,.1); color: #ec4899; }
+    .gi-file-type-icon.other { background: var(--accent-tint); color: var(--accent); }
+    .gi-file-info { flex: 1; min-width: 0; }
+    .gi-file-name {
+      font-family: var(--f-display); font-size: 14px; font-weight: 600;
+      color: var(--base-900); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    }
+    .gi-file-meta { display: flex; align-items: center; gap: 8px; margin-top: 3px; }
+    .gi-file-size { font-size: 12px; color: var(--base-400); }
+    .gi-file-date { font-size: 12px; color: var(--base-300); }
+
+    /* Status badges */
+    .gi-status {
+      display: inline-flex; align-items: center; gap: 5px;
+      border-radius: 5px; padding: 3px 8px;
+      font-family: var(--f-label); font-size: 10px; font-weight: 700;
+      letter-spacing: .8px; text-transform: uppercase; flex-shrink: 0;
+    }
+    .gi-status.indexed { background: rgba(22,163,74,.1); color: #16a34a; }
+    .gi-status.processing { background: rgba(234,179,8,.1); color: #ca8a04; }
+    .gi-status.uploading { background: var(--accent-tint); color: var(--accent); }
+    .gi-status.error { background: rgba(239,68,68,.1); color: #ef4444; }
+
+    /* Upload progress bar */
+    .gi-file-progress {
+      width: 100%; height: 4px; border-radius: 4px;
+      background: var(--base-50); margin-top: 8px; overflow: hidden;
+    }
+    .gi-file-progress-fill {
+      height: 100%; border-radius: 4px; background: var(--accent);
+      transition: width .3s ease;
+    }
+
+    /* AI summary on indexed cards */
+    .gi-file-summary {
+      font-size: 12px; color: var(--base-500); line-height: 1.5; margin-top: 6px;
+      display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+    }
+    .gi-file-tags { display: flex; gap: 5px; margin-top: 6px; flex-wrap: wrap; }
+    .gi-file-tag {
+      font-size: 11px; color: var(--accent); background: var(--accent-tint);
+      border-radius: 4px; padding: 2px 7px;
+    }
+
+    /* Action buttons on card */
+    .gi-file-actions { display: flex; align-items: center; gap: 4px; flex-shrink: 0; }
+    .gi-file-action-btn {
+      width: 30px; height: 30px; border-radius: 7px; border: none;
+      background: transparent; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      color: var(--base-400); transition: background .15s, color .15s;
+    }
+    .gi-file-action-btn:hover { background: var(--bgc); color: var(--base-700); }
+    .gi-file-action-btn.danger:hover { background: rgba(239,68,68,.1); color: #ef4444; }
+
+    /* Sidebar badge */
+    .gi-sb-badge {
+      font-family: var(--f-label); font-size: 10px; font-weight: 700; letter-spacing: .5px;
+      background: var(--accent); color: var(--white);
+      border-radius: 4px; padding: 1px 6px; min-width: 18px; text-align: center;
+    }
+
+    /* Compact drop zone (when files exist) */
+    .gi-dropzone-compact {
+      border: 2px dashed var(--base-100); border-radius: 12px;
+      padding: 16px 20px; display: flex; align-items: center; gap: 16px;
+      background: var(--white); cursor: pointer;
+      transition: border-color .2s, background .2s; position: relative;
+    }
+    .gi-dropzone-compact:hover, .gi-dropzone-compact.drag-over {
+      border-color: var(--accent); background: rgba(23,112,239,.04);
+    }
+    .gi-dropzone-compact input[type="file"] {
+      position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; height: 100%;
+    }
+    .gi-dropzone-compact-icon {
+      width: 36px; height: 36px; border-radius: 10px;
+      background: var(--accent-tint); display: flex; align-items: center; justify-content: center;
+      color: var(--accent); flex-shrink: 0;
+    }
+
+    /* Delete confirm modal */
+    .gi-delete-modal {
+      position: fixed; inset: 0; background: var(--black-70);
+      display: none; align-items: center; justify-content: center; z-index: 500;
+      backdrop-filter: blur(4px);
+    }
+    .gi-delete-modal.open { display: flex; }
+    .gi-delete-modal-box {
+      background: var(--white); border-radius: 20px; padding: 28px;
+      width: 360px; box-shadow: 0 24px 64px rgba(0,0,0,.15);
+      display: flex; flex-direction: column; gap: 16px;
+    }
+    .gi-delete-modal-icon {
+      width: 48px; height: 48px; border-radius: 14px;
+      background: rgba(239,68,68,.1); display: flex; align-items: center; justify-content: center;
+      color: #ef4444;
+    }
+    .gi-delete-modal-title {
+      font-family: var(--f-display); font-size: 18px; font-weight: 700; color: var(--base-900);
+    }
+    .gi-delete-modal-desc { font-size: 14px; color: var(--base-500); line-height: 1.6; }
+    .gi-delete-modal-actions { display: flex; gap: 10px; justify-content: flex-end; }
+    .gi-btn-cancel {
+      padding: 9px 18px; border-radius: 9px; border: 1px solid var(--base-100);
+      background: var(--white); font-family: var(--f-display); font-size: 14px; font-weight: 600;
+      color: var(--base-600); cursor: pointer; transition: background .15s;
+    }
+    .gi-btn-cancel:hover { background: var(--bgc); }
+    .gi-btn-delete {
+      padding: 9px 18px; border-radius: 9px; border: none;
+      background: #ef4444; color: white;
+      font-family: var(--f-display); font-size: 14px; font-weight: 600;
+      cursor: pointer; transition: background .15s;
+    }
+    .gi-btn-delete:hover { background: #dc2626; }
+
+    /* File detail side panel */
+    .gi-detail-panel {
+      position: fixed; top: 0; right: -420px; width: 420px; height: 100vh;
+      background: var(--white); border-left: 1px solid var(--base-50);
+      box-shadow: -8px 0 32px rgba(0,0,0,.08);
+      display: flex; flex-direction: column; z-index: 300;
+      transition: right .3s cubic-bezier(.4,0,.2,1);
+    }
+    .gi-detail-panel.open { right: 0; }
+    .gi-detail-header {
+      display: flex; align-items: center; gap: 12px;
+      padding: 20px; border-bottom: 1px solid var(--base-50); flex-shrink: 0;
+    }
+    .gi-detail-close {
+      width: 32px; height: 32px; border-radius: 8px; border: none;
+      background: var(--bgc); cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      color: var(--base-500); transition: background .15s;
+    }
+    .gi-detail-close:hover { background: var(--base-50); }
+    .gi-detail-filename {
+      font-family: var(--f-display); font-size: 14px; font-weight: 700;
+      color: var(--base-900); flex: 1; min-width: 0;
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    }
+    .gi-detail-body {
+      flex: 1; overflow-y: auto; padding: 20px;
+      display: flex; flex-direction: column; gap: 20px;
+    }
+    .gi-detail-body::-webkit-scrollbar { width: 4px; }
+    .gi-detail-body::-webkit-scrollbar-thumb { background: var(--base-100); border-radius: 2px; }
+    .gi-detail-section-label {
+      font-family: var(--f-label); font-size: 10px; font-weight: 700;
+      letter-spacing: 1.5px; text-transform: uppercase; color: var(--base-300); margin-bottom: 8px;
+    }
+    .gi-detail-summary {
+      font-size: 13px; color: var(--base-600); line-height: 1.65;
+      background: var(--bgc); border-radius: 10px; padding: 14px;
+    }
+    .gi-detail-keypoints { display: flex; flex-direction: column; gap: 8px; }
+    .gi-detail-keypoint {
+      display: flex; align-items: flex-start; gap: 10px;
+      font-size: 13px; color: var(--base-700); line-height: 1.5;
+    }
+    .gi-detail-kp-dot {
+      width: 6px; height: 6px; border-radius: 50%; background: var(--accent);
+      flex-shrink: 0; margin-top: 7px;
+    }
+    .gi-detail-tags { display: flex; flex-wrap: wrap; gap: 6px; }
+    .gi-detail-tag {
+      font-size: 12px; color: var(--accent); background: var(--accent-tint);
+      border: 1px solid var(--accent-tint-bd); border-radius: 6px; padding: 4px 10px;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .gi-spin { animation: spin 1.2s linear infinite; }
   </style>
 </head>
 <body>
@@ -735,6 +1034,26 @@
               </svg>
             </span>
             <span class="sb-nav-label">Guardian</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Game Intelligence -->
+      <div class="sb-nav-group">
+        <div class="sb-section-label" style="margin-bottom:0">Game Context</div>
+        <div style="height:4px"></div>
+        <div class="sb-nav-item" id="giNavItem" onclick="showGI()">
+          <div class="sb-highlight"></div>
+          <div class="sb-nav-item-inner">
+            <span class="sb-nav-icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 2L2 7l10 5 10-5-10-5z"/>
+                <path d="M2 17l10 5 10-5"/>
+                <path d="M2 12l10 5 10-5"/>
+              </svg>
+            </span>
+            <span class="sb-nav-label">Game Intelligence</span>
+            <span class="gi-sb-badge" id="giBadge" style="display:none">0</span>
           </div>
         </div>
       </div>
@@ -990,7 +1309,172 @@
       </div><!-- /results-body -->
     </div><!-- /#resultsView -->
 
+    <!-- ── GAME INTELLIGENCE VIEW ──────────────────────────────── -->
+    <div id="giView">
+
+      <!-- Header -->
+      <div class="gi-header">
+        <div>
+          <h2 class="gi-title">Game Intelligence</h2>
+          <p class="gi-subtitle">Upload game documents to give AI agents richer context and sharper insights</p>
+        </div>
+        <button class="gi-upload-btn" onclick="document.getElementById('giFileInputTop').click()">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          Upload Files
+        </button>
+        <input type="file" id="giFileInputTop" multiple accept=".pdf,.ppt,.pptx,.doc,.docx,.jpg,.jpeg,.png,.gif,.webp,.mp4,.mov,.avi" style="display:none" onchange="handleFileInputChange(event)"/>
+      </div>
+
+      <!-- Stats bar (shown once files exist) -->
+      <div class="gi-stats" id="giStats" style="display:none">
+        <div class="gi-stat">
+          <div class="gi-stat-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+          </div>
+          <div>
+            <div class="gi-stat-value" id="giStatFiles">0</div>
+            <div class="gi-stat-label">Files Indexed</div>
+          </div>
+        </div>
+        <div class="gi-stat">
+          <div class="gi-stat-icon" style="background:rgba(139,92,246,.1);color:#8b5cf6">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg>
+          </div>
+          <div>
+            <div class="gi-stat-value" id="giStatTypes" style="font-size:14px;margin-top:2px">—</div>
+            <div class="gi-stat-label">File Types</div>
+          </div>
+        </div>
+        <div class="gi-stat">
+          <div class="gi-stat-icon" style="background:rgba(22,163,74,.1);color:#16a34a">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          </div>
+          <div>
+            <div class="gi-stat-value" id="giStatUpdated" style="font-size:13px;margin-top:2px">—</div>
+            <div class="gi-stat-label">Last Updated</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Scrollable body -->
+      <div class="gi-body" id="giBody">
+
+        <!-- ── EMPTY STATE ── -->
+        <div class="gi-empty" id="giEmpty">
+          <div class="gi-empty-icon">
+            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 2L2 7l10 5 10-5-10-5z"/>
+              <path d="M2 17l10 5 10-5"/>
+              <path d="M2 12l10 5 10-5"/>
+            </svg>
+          </div>
+          <div class="gi-empty-title">No game context yet</div>
+          <div class="gi-empty-desc">Upload GDD documents, design decks, screenshots, lore files or gameplay videos to help AI agents provide more accurate, game-specific insights.</div>
+          <!-- Drop zone in empty state -->
+          <div class="gi-dropzone" id="giDropzoneEmpty" style="width:100%;max-width:560px"
+            ondragover="handleDragOver(event)" ondragleave="handleDragLeave(event)" ondrop="handleDrop(event)">
+            <div class="gi-dropzone-icon">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="16 16 12 12 8 16"/><line x1="12" y1="12" x2="12" y2="21"/>
+                <path d="M20.39 18.39A5 5 0 0 0 18 9h-1.26A8 8 0 1 0 3 16.3"/>
+              </svg>
+            </div>
+            <div class="gi-dropzone-title">Drag &amp; drop files here</div>
+            <div class="gi-dropzone-sub">or click anywhere in this box to browse</div>
+            <div class="gi-dropzone-types">
+              <span class="gi-type-pill">PDF</span>
+              <span class="gi-type-pill">PPT / PPTX</span>
+              <span class="gi-type-pill">DOC / DOCX</span>
+              <span class="gi-type-pill">Images</span>
+              <span class="gi-type-pill">Video</span>
+              <span class="gi-type-pill">+ more</span>
+            </div>
+            <input type="file" multiple accept=".pdf,.ppt,.pptx,.doc,.docx,.jpg,.jpeg,.png,.gif,.webp,.mp4,.mov,.avi" onchange="handleFileInputChange(event)"/>
+          </div>
+        </div>
+
+        <!-- ── LIBRARY STATE (shown when files exist) ── -->
+        <div id="giLibrary" style="display:none; flex-direction:column; gap:16px">
+
+          <!-- Compact drop zone -->
+          <div class="gi-dropzone-compact" id="giDropzoneCompact"
+            ondragover="handleDragOver(event)" ondragleave="handleDragLeave(event)" ondrop="handleDrop(event)">
+            <div class="gi-dropzone-compact-icon">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="16 16 12 12 8 16"/><line x1="12" y1="12" x2="12" y2="21"/>
+                <path d="M20.39 18.39A5 5 0 0 0 18 9h-1.26A8 8 0 1 0 3 16.3"/>
+              </svg>
+            </div>
+            <div>
+              <div style="font-family:var(--f-display);font-size:14px;font-weight:700;color:var(--base-800)">Add more files</div>
+              <div style="font-size:12px;color:var(--base-400);margin-top:2px">PDF, PPT, DOC, Images, Video and more</div>
+            </div>
+            <input type="file" multiple accept=".pdf,.ppt,.pptx,.doc,.docx,.jpg,.jpeg,.png,.gif,.webp,.mp4,.mov,.avi" onchange="handleFileInputChange(event)"/>
+          </div>
+
+          <!-- File list -->
+          <div>
+            <div class="gi-library-header">
+              <div>
+                <span class="gi-library-title">Uploaded Files</span>
+                <span class="gi-library-count" id="giFileCount">0 files</span>
+              </div>
+            </div>
+            <div class="gi-files" id="giFileList"></div>
+          </div>
+
+        </div><!-- /giLibrary -->
+
+      </div><!-- /gi-body -->
+    </div><!-- /#giView -->
+
   </main>
+</div>
+
+<!-- ── GI Delete Confirm Modal ──────────────────────────────── -->
+<div class="gi-delete-modal" id="giDeleteModal">
+  <div class="gi-delete-modal-box">
+    <div class="gi-delete-modal-icon">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/>
+        <path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4h6v2"/>
+      </svg>
+    </div>
+    <div>
+      <div class="gi-delete-modal-title">Remove file?</div>
+      <div class="gi-delete-modal-desc">"<span id="giDeleteFileName"></span>" will be removed from your game context. This cannot be undone.</div>
+    </div>
+    <div class="gi-delete-modal-actions">
+      <button class="gi-btn-cancel" onclick="giCancelDelete()">Cancel</button>
+      <button class="gi-btn-delete" onclick="giExecuteDelete()">Remove</button>
+    </div>
+  </div>
+</div>
+
+<!-- ── GI File Detail Side Panel ──────────────────────────── -->
+<div class="gi-detail-panel" id="giDetailPanel">
+  <div class="gi-detail-header">
+    <button class="gi-detail-close" onclick="giCloseDetail()">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+      </svg>
+    </button>
+    <span class="gi-detail-filename" id="giDetailFilename"></span>
+  </div>
+  <div class="gi-detail-body">
+    <div>
+      <div class="gi-detail-section-label">AI Summary</div>
+      <div class="gi-detail-summary" id="giDetailSummary"></div>
+    </div>
+    <div>
+      <div class="gi-detail-section-label">Key Insights Extracted</div>
+      <div class="gi-detail-keypoints" id="giDetailKP"></div>
+    </div>
+    <div>
+      <div class="gi-detail-section-label">Context Tags</div>
+      <div class="gi-detail-tags" id="giDetailTags"></div>
+    </div>
+  </div>
 </div>
 
 <!-- Filter dropdown -->
@@ -1163,14 +1647,18 @@ function setView(mode) {
 function showHome() {
   document.getElementById('homeView').style.display = 'block';
   document.getElementById('resultsView').classList.remove('visible');
+  document.getElementById('giView').classList.remove('visible');
   document.getElementById('homeNavItem').classList.add('home-active');
+  document.getElementById('giNavItem').classList.remove('home-active');
   document.getElementById('heroTextarea').value = '';
   updateSendBtn();
 }
 function showResults() {
   document.getElementById('homeView').style.display = 'none';
   document.getElementById('resultsView').classList.add('visible');
+  document.getElementById('giView').classList.remove('visible');
   document.getElementById('homeNavItem').classList.remove('home-active');
+  document.getElementById('giNavItem').classList.remove('home-active');
 }
 
 /* ── TABS ────────────────────────────────────────────────── */
@@ -1241,7 +1729,295 @@ function toggleCb(el) {
     cb.innerHTML = '<svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>';
   }
 }
-document.addEventListener('click', () => document.getElementById('filterDropdown').classList.remove('open'));
+document.addEventListener('click', (e) => {
+  document.getElementById('filterDropdown').classList.remove('open');
+  // Close detail panel on outside click
+  const panel = document.getElementById('giDetailPanel');
+  if (panel && panel.classList.contains('open') && !panel.contains(e.target)) {
+    panel.classList.remove('open');
+  }
+});
+
+/* ═══════════════════════════════════════════════════════════
+   GAME INTELLIGENCE
+═══════════════════════════════════════════════════════════ */
+let giFiles = [];
+let pendingDeleteId = null;
+
+const GI_SUMMARIES = {
+  pdf: 'AI extracted key gameplay mechanics, progression systems, and design notes. Balance parameters and economy data captured and indexed into agent context.',
+  ppt: 'Presentation slides analyzed — identified feature roadmap, art direction notes, and UX flows. Design rationale and milestone data indexed.',
+  doc: 'Document indexed — lore entries, character descriptions, level design specs, and narrative structure captured for agent context.',
+  img: 'Image analyzed — UI layouts, character silhouettes, environment art, and HUD elements recognized and tagged.',
+  vid: 'Video processed — gameplay sequences, tutorial flows, in-game events, and player behavior patterns extracted and indexed.',
+  other: 'File processed and indexed into the game context knowledge base for agent reference.'
+};
+
+const GI_TAGS = {
+  pdf: ['Game Design', 'Mechanics', 'Balance'],
+  ppt: ['Presentation', 'Features', 'Art Direction'],
+  doc: ['Lore', 'Level Design', 'Characters'],
+  img: ['Visual', 'UI', 'Environment'],
+  vid: ['Gameplay', 'Tutorial', 'Events'],
+  other: ['Context', 'Reference']
+};
+
+const GI_KEYPOINTS = [
+  'Core gameplay loop and player progression systems documented',
+  'Game balance parameters and difficulty scaling captured',
+  'Player behavior patterns and engagement triggers identified',
+  'Monetization features and virtual economy mapped',
+  'Tutorial flow and onboarding structure indexed'
+];
+
+function giGetType(name) {
+  const ext = (name.split('.').pop() || '').toLowerCase();
+  if (ext === 'pdf') return 'pdf';
+  if (['ppt','pptx'].includes(ext)) return 'ppt';
+  if (['doc','docx','txt'].includes(ext)) return 'doc';
+  if (['jpg','jpeg','png','gif','webp','svg'].includes(ext)) return 'img';
+  if (['mp4','mov','avi','mkv','webm'].includes(ext)) return 'vid';
+  return 'other';
+}
+
+function giTypeLabel(t) { return {pdf:'PDF',ppt:'PPT',doc:'DOC',img:'Image',vid:'Video',other:'File'}[t]||'File'; }
+
+function giTypeIcon(t) {
+  const s = 'stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"';
+  const icons = {
+    pdf: `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" ${s}><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>`,
+    ppt: `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" ${s}><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>`,
+    doc: `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" ${s}><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><line x1="10" y1="9" x2="8" y2="9"/></svg>`,
+    img: `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" ${s}><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>`,
+    vid: `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" ${s}><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2"/></svg>`,
+    other: `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" ${s}><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>`
+  };
+  return icons[t] || icons.other;
+}
+
+function giFmtBytes(b) {
+  if (!b || b < 1024) return (b || Math.floor(Math.random()*900+100)) + ' KB';
+  if (b < 1048576) return (b/1024).toFixed(1) + ' KB';
+  return (b/1048576).toFixed(1) + ' MB';
+}
+
+/* ── Show GI view ── */
+function showGI() {
+  document.getElementById('homeView').style.display = 'none';
+  document.getElementById('resultsView').classList.remove('visible');
+  document.getElementById('giView').classList.add('visible');
+  // sidebar active states
+  document.querySelectorAll('.sb-nav-item').forEach(i => {
+    i.classList.remove('home-active');
+    const hl = i.querySelector('.sb-highlight');
+    const lb = i.querySelector('.sb-nav-label');
+    const ic = i.querySelector('.sb-nav-icon');
+    if (hl) hl.style.background = '';
+    if (lb) lb.style.color = '';
+    if (ic) ic.style.color = '';
+  });
+  document.getElementById('giNavItem').classList.add('home-active');
+}
+
+/* ── Drag & drop ── */
+function handleDragOver(e) { e.preventDefault(); e.currentTarget.classList.add('drag-over'); }
+function handleDragLeave(e) { e.currentTarget.classList.remove('drag-over'); }
+function handleDrop(e) {
+  e.preventDefault(); e.currentTarget.classList.remove('drag-over');
+  processGIFiles(Array.from(e.dataTransfer.files));
+}
+function handleFileInputChange(e) {
+  processGIFiles(Array.from(e.target.files));
+  e.target.value = '';
+}
+
+/* ── Process files ── */
+function processGIFiles(files) {
+  files.forEach(f => {
+    const id = Date.now() + Math.random();
+    const type = giGetType(f.name);
+    giFiles.push({
+      id, name: f.name,
+      size: giFmtBytes(f.size),
+      type, status: 'uploading', progress: 0,
+      date: new Date().toLocaleDateString('en-US', {month:'short',day:'numeric',year:'numeric'}),
+      summary: GI_SUMMARIES[type],
+      tags: GI_TAGS[type]
+    });
+    renderGIView();
+    simulateGIUpload(id);
+  });
+}
+
+function simulateGIUpload(id) {
+  let prog = 0;
+  const iv = setInterval(() => {
+    prog += Math.random() * 28 + 8;
+    if (prog >= 100) {
+      prog = 100; clearInterval(iv);
+      giUpdateFile(id, { status: 'processing', progress: 100 });
+      renderGICard(id);
+      setTimeout(() => {
+        giUpdateFile(id, { status: 'indexed' });
+        renderGICard(id);
+        updateGIBadge();
+        updateGIStats();
+      }, 2000 + Math.random() * 1000);
+    } else {
+      giUpdateFile(id, { progress: prog });
+      const el = document.getElementById('gi-prog-' + id);
+      if (el) el.style.width = prog + '%';
+    }
+  }, 350);
+}
+
+function giUpdateFile(id, patch) {
+  const f = giFiles.find(x => x.id === id);
+  if (f) Object.assign(f, patch);
+}
+
+/* ── Render ── */
+function renderGIView() {
+  const hasFiles = giFiles.length > 0;
+  document.getElementById('giEmpty').style.display = hasFiles ? 'none' : 'flex';
+  const lib = document.getElementById('giLibrary');
+  lib.style.display = hasFiles ? 'flex' : 'none';
+  if (hasFiles) lib.style.flexDirection = 'column';
+  if (hasFiles) {
+    document.getElementById('giFileCount').textContent = giFiles.length + ' file' + (giFiles.length !== 1 ? 's' : '');
+    const list = document.getElementById('giFileList');
+    // Only re-render cards not already in DOM
+    giFiles.forEach(f => {
+      if (!document.getElementById('gi-card-' + f.id)) {
+        const card = document.createElement('div');
+        card.className = 'gi-file-card';
+        card.id = 'gi-card-' + f.id;
+        card.innerHTML = buildGICardHTML(f);
+        list.appendChild(card);
+      }
+    });
+  }
+}
+
+function renderGICard(id) {
+  const f = giFiles.find(x => x.id === id);
+  const card = document.getElementById('gi-card-' + id);
+  if (f && card) card.innerHTML = buildGICardHTML(f);
+}
+
+function buildGICardHTML(f) {
+  const statusEl = {
+    uploading: `<span class="gi-status uploading">
+      <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="16 16 12 12 8 16"/><line x1="12" y1="12" x2="12" y2="21"/><path d="M20.39 18.39A5 5 0 0 0 18 9h-1.26A8 8 0 1 0 3 16.3"/></svg>
+      Uploading</span>`,
+    processing: `<span class="gi-status processing">
+      <svg class="gi-spin" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 12a9 9 0 1 1-6.219-8.56"/></svg>
+      Analyzing</span>`,
+    indexed: `<span class="gi-status indexed">
+      <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+      Indexed</span>`,
+    error: `<span class="gi-status error">
+      <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+      Failed</span>`
+  }[f.status] || '';
+
+  const progressBar = f.status === 'uploading'
+    ? `<div class="gi-file-progress"><div class="gi-file-progress-fill" id="gi-prog-${f.id}" style="width:${f.progress}%"></div></div>`
+    : '';
+
+  const extra = f.status === 'indexed' ? `
+    <div class="gi-file-summary">${f.summary}</div>
+    <div class="gi-file-tags">${f.tags.map(t=>`<span class="gi-file-tag">${t}</span>`).join('')}</div>` : '';
+
+  const retryBtn = f.status === 'error'
+    ? `<button class="gi-file-action-btn" onclick="giRetry(${f.id})" title="Retry">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 .49-3.5"/></svg>
+       </button>` : '';
+
+  const viewBtn = f.status === 'indexed'
+    ? `<button class="gi-file-action-btn" onclick="giOpenDetail(${f.id})" title="View AI summary">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+       </button>` : '';
+
+  return `
+    <div class="gi-file-type-icon ${f.type}">${giTypeIcon(f.type)}</div>
+    <div class="gi-file-info">
+      <div class="gi-file-name">${f.name}</div>
+      <div class="gi-file-meta">
+        <span class="gi-file-size">${f.size}</span>
+        <span class="gi-file-date">· ${f.date}</span>
+      </div>
+      ${progressBar}${extra}
+    </div>
+    ${statusEl}
+    <div class="gi-file-actions">
+      ${retryBtn}${viewBtn}
+      <button class="gi-file-action-btn danger" onclick="giConfirmDelete(${f.id})" title="Remove">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4h6v2"/></svg>
+      </button>
+    </div>`;
+}
+
+/* ── Stats & badge ── */
+function updateGIBadge() {
+  const n = giFiles.filter(f => f.status === 'indexed').length;
+  const badge = document.getElementById('giBadge');
+  badge.textContent = n;
+  badge.style.display = n > 0 ? 'inline-block' : 'none';
+}
+
+function updateGIStats() {
+  const indexed = giFiles.filter(f => f.status === 'indexed');
+  document.getElementById('giStatFiles').textContent = indexed.length;
+  const types = [...new Set(indexed.map(f => giTypeLabel(f.type)))];
+  document.getElementById('giStatTypes').textContent = types.join(', ') || '—';
+  document.getElementById('giStatUpdated').textContent = 'Just now';
+  document.getElementById('giStats').style.display = indexed.length > 0 ? 'flex' : 'none';
+}
+
+/* ── Delete ── */
+function giConfirmDelete(id) {
+  pendingDeleteId = id;
+  const f = giFiles.find(x => x.id === id);
+  if (!f) return;
+  document.getElementById('giDeleteFileName').textContent = f.name;
+  document.getElementById('giDeleteModal').classList.add('open');
+}
+function giCancelDelete() {
+  pendingDeleteId = null;
+  document.getElementById('giDeleteModal').classList.remove('open');
+}
+function giExecuteDelete() {
+  giFiles = giFiles.filter(f => f.id !== pendingDeleteId);
+  pendingDeleteId = null;
+  document.getElementById('giDeleteModal').classList.remove('open');
+  // Re-render full list
+  document.getElementById('giFileList').innerHTML = '';
+  renderGIView();
+  updateGIBadge();
+  updateGIStats();
+}
+
+/* ── Retry ── */
+function giRetry(id) {
+  giUpdateFile(id, { status: 'uploading', progress: 0 });
+  renderGICard(id);
+  simulateGIUpload(id);
+}
+
+/* ── Detail panel ── */
+function giOpenDetail(id) {
+  const f = giFiles.find(x => x.id === id);
+  if (!f) return;
+  document.getElementById('giDetailFilename').textContent = f.name;
+  document.getElementById('giDetailSummary').textContent = f.summary;
+  document.getElementById('giDetailKP').innerHTML =
+    GI_KEYPOINTS.map(p => `<div class="gi-detail-keypoint"><div class="gi-detail-kp-dot"></div><span>${p}</span></div>`).join('');
+  document.getElementById('giDetailTags').innerHTML =
+    f.tags.map(t => `<span class="gi-detail-tag">${t}</span>`).join('');
+  document.getElementById('giDetailPanel').classList.add('open');
+}
+function giCloseDetail() { document.getElementById('giDetailPanel').classList.remove('open'); }
 </script>
 </body>
 </html>
